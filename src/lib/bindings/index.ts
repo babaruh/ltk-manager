@@ -1,4 +1,5 @@
 export type { AccentColor } from "./AccentColor";
+export type { AddFilesReport } from "./AddFilesReport";
 export type { AppError } from "./AppError";
 export type { AppInfo } from "./AppInfo";
 export type { AuthorProfile } from "./AuthorProfile";
@@ -51,6 +52,7 @@ export type { Theme } from "./Theme";
 export type { ValidationResult } from "./ValidationResult";
 export type { WadBlocklistEntry } from "./WadBlocklistEntry";
 export type { WorkshopAuthor } from "./WorkshopAuthor";
+export type { WorkshopError } from "./WorkshopError";
 export type { WorkshopFileKind } from "./WorkshopFileKind";
 export type { WorkshopLayer } from "./WorkshopLayer";
 export type { WorkshopLayerInfo } from "./WorkshopLayerInfo";

@@ -5,6 +5,6 @@ export type EditModMetadataArgs = {
   tags: Array<string> | null;
   champions: Array<string> | null;
   maps: Array<string> | null;
-  setThumbnailPath?: string | null;
-  removeThumbnail?: boolean | null;
+  setThumbnailPath: string | null;
+  removeThumbnail: boolean | null;
 };
