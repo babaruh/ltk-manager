@@ -1,6 +1,7 @@
 import { invoke } from "@tauri-apps/api/core";
 
 import type {
+  AddFilesReport,
   AppError,
   AppInfo,
   BulkInstallResult,
@@ -252,4 +253,6 @@ export const api = {
       layerName,
       description,
     }),
+  addFilesToLayer: (projectPath: string, layerName: string, sources: string[]) =>
+    invokeResult<AddFilesReport>("add_files_to_layer", { projectPath, layerName, sources }),
 };

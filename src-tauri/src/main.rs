@@ -135,6 +135,7 @@ fn main() {
             commands::delete_project_layer,
             commands::reorder_project_layers,
             commands::update_layer_description,
+            commands::add_files_to_layer,
             // Deep Link
             commands::deep_link_install_mod,
             // for dynamic icons
