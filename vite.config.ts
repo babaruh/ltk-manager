@@ -8,8 +8,22 @@ import { defineConfig } from "vite";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
+// Only `pnpm dev:web` (`vite --mode web`) gets these - `tauri dev` runs the
+// same `pnpm dev` script Tauri's `beforeDevCommand` invokes, unaffected, so
+// the real IPC bridge is never swapped out from under the desktop build.
+const WEB_MOCK_ALIASES = {
+  "@tauri-apps/api/core": path.resolve(__dirname, "./src/dev/tauriShims/core.ts"),
+  "@tauri-apps/api/event": path.resolve(__dirname, "./src/dev/tauriShims/event.ts"),
+  "@tauri-apps/api/window": path.resolve(__dirname, "./src/dev/tauriShims/window.ts"),
+  "@tauri-apps/plugin-dialog": path.resolve(__dirname, "./src/dev/tauriShims/dialog.ts"),
+  "@tauri-apps/plugin-fs": path.resolve(__dirname, "./src/dev/tauriShims/fs.ts"),
+  "@tauri-apps/plugin-shell": path.resolve(__dirname, "./src/dev/tauriShims/shell.ts"),
+  "@tauri-apps/plugin-process": path.resolve(__dirname, "./src/dev/tauriShims/process.ts"),
+  "@tauri-apps/plugin-updater": path.resolve(__dirname, "./src/dev/tauriShims/updater.ts"),
+};
+
 // https://vitejs.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   plugins: [tanstackRouter({ target: "react", autoCodeSplitting: true }), react(), tailwindcss()],
 
   // Prevent vite from obscuring rust errors
@@ -28,6 +42,7 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
+      ...(mode === "web" ? WEB_MOCK_ALIASES : {}),
     },
   },
 
@@ -44,4 +59,4 @@ export default defineConfig({
     // Fallback to original minifier until @tailwindcss/vite supports Vite 8
     cssMinify: "esbuild",
   },
-});
+}));

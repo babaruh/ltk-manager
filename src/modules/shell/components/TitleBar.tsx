@@ -3,6 +3,7 @@ import { getCurrentWindow } from "@tauri-apps/api/window";
 import { open } from "@tauri-apps/plugin-shell";
 import {
   Accessibility,
+  EllipsisVertical,
   FolderOpen,
   Hammer,
   Minus,
@@ -14,7 +15,7 @@ import {
 import { type ComponentType, useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
 
-import { IconButton, MaskIcon, Separator, Tooltip, useToast } from "@/components";
+import { IconButton, MaskIcon, Menu, Separator, Tooltip, useToast } from "@/components";
 import { usePlatformSupport } from "@/hooks";
 import { api, type AppInfo, unwrap } from "@/lib/tauri";
 import { ProfileSelector } from "@/modules/library";
@@ -128,8 +129,10 @@ export function TitleBar({ title = "LTK Manager", appInfo }: TitleBarProps) {
   return (
     <header
       className={twMerge(
-        "title-bar flex h-10 shrink-0 items-center justify-between border-b border-surface-600 bg-surface-950 select-none",
-        isMacOS && "pl-20",
+        "title-bar flex h-10 shrink-0 items-center justify-between bg-surface-950 select-none",
+        // Fixed, not zoom-scaled: clears macOS's own traffic-light buttons,
+        // which stay a constant OS size regardless of the app's density.
+        isMacOS && "pl-[80px]",
       )}
       data-tauri-drag-region
     >
@@ -161,40 +164,47 @@ export function TitleBar({ title = "LTK Manager", appInfo }: TitleBarProps) {
 
       {/* Right: Notifications, Settings, and window controls */}
       <div className="flex h-full items-center">
-        <Tooltip content="Open storage directory">
-          <IconButton
-            icon={<FolderOpen className="h-4 w-4" />}
-            variant="ghost"
-            size="sm"
-            onClick={handleOpenStorageDirectory}
-            aria-label="Open storage directory"
-            className="text-surface-400 hover:text-surface-200"
-          />
-        </Tooltip>
-
         <NotificationCenter />
 
-        <Tooltip content="Report a Bug">
-          <IconButton
-            icon={<Accessibility className="h-5 w-5" />}
-            variant="ghost"
-            size="sm"
-            onClick={() => open(bugReportUrl)}
-            aria-label="Report a Bug"
-            className="text-surface-400 hover:text-surface-200"
-          />
-        </Tooltip>
-
-        <Tooltip content="Join our Discord">
-          <IconButton
-            icon={<DiscordIcon className="h-4 w-4" />}
-            variant="ghost"
-            size="sm"
-            onClick={() => open("https://discord.gg/yhzDVRyQex")}
-            aria-label="Join our Discord"
-            className="text-surface-400 hover:text-surface-200"
-          />
-        </Tooltip>
+        <Menu.Root>
+          <Tooltip content="More">
+            <Menu.Trigger
+              render={
+                <IconButton
+                  icon={<EllipsisVertical className="h-4 w-4" />}
+                  variant="ghost"
+                  size="sm"
+                  aria-label="More"
+                  className="text-surface-400 hover:text-surface-200"
+                />
+              }
+            />
+          </Tooltip>
+          <Menu.Portal>
+            <Menu.Positioner>
+              <Menu.Popup>
+                <Menu.Item
+                  icon={<FolderOpen className="h-4 w-4" />}
+                  onClick={handleOpenStorageDirectory}
+                >
+                  Open storage directory
+                </Menu.Item>
+                <Menu.Item
+                  icon={<Accessibility className="h-4 w-4" />}
+                  onClick={() => open(bugReportUrl)}
+                >
+                  Report a Bug
+                </Menu.Item>
+                <Menu.Item
+                  icon={<DiscordIcon className="h-4 w-4" />}
+                  onClick={() => open("https://discord.gg/yhzDVRyQex")}
+                >
+                  Join our Discord
+                </Menu.Item>
+              </Menu.Popup>
+            </Menu.Positioner>
+          </Menu.Portal>
+        </Menu.Root>
 
         <Tooltip content="Diagnostics">
           <Link

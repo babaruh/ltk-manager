@@ -50,6 +50,7 @@ export interface ModCardView {
   onCopyId: () => void;
   onOpenLocation: () => void;
   onRemoveFromFolder: () => void;
+  onCheckboxClick: () => void;
   onViewDetails?: (mod: InstalledMod) => void;
   onEditMetadata?: (mod: InstalledMod) => void;
 }
@@ -74,6 +75,7 @@ export function useModCardController({
   const isSelected = useLibrarySelectionStore((s) => s.selectedIds.has(mod.id));
   const toggleSelection = useLibrarySelectionStore((s) => s.toggle);
   const selectRangeTo = useLibrarySelectionStore((s) => s.selectRangeTo);
+  const enterSelectMode = useLibrarySelectionStore((s) => s.enterSelectMode);
 
   const {
     isFlagged,
@@ -116,6 +118,11 @@ export function useModCardController({
 
   function handleRemoveFromFolder() {
     moveModToFolder.mutate({ modId: mod.id, folderId: ROOT_FOLDER_ID });
+  }
+
+  function handleCheckboxClick() {
+    if (!selectMode) enterSelectMode();
+    toggleSelection(mod.id);
   }
 
   function handleCardClick(e: React.MouseEvent) {
@@ -162,6 +169,7 @@ export function useModCardController({
     onCopyId: handleCopyId,
     onOpenLocation: handleOpenLocation,
     onRemoveFromFolder: handleRemoveFromFolder,
+    onCheckboxClick: handleCheckboxClick,
     onViewDetails,
     onEditMetadata,
   };

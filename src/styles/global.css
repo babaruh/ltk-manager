@@ -54,6 +54,22 @@
   --space-010: calc(10 * 4.5px * var(--zoom-scale));
   --space-011: calc(11 * 4.5px * var(--zoom-scale));
   --space-012: calc(12 * 4.5px * var(--zoom-scale));
+  --space-013: calc(13 * 4.5px * var(--zoom-scale));
+  --space-014: calc(14 * 4.5px * var(--zoom-scale));
+  --space-015: calc(15 * 4.5px * var(--zoom-scale));
+  --space-016: calc(16 * 4.5px * var(--zoom-scale));
+  --space-017: calc(17 * 4.5px * var(--zoom-scale));
+  --space-018: calc(18 * 4.5px * var(--zoom-scale));
+  --space-019: calc(19 * 4.5px * var(--zoom-scale));
+  --space-020: calc(20 * 4.5px * var(--zoom-scale));
+  --space-021: calc(21 * 4.5px * var(--zoom-scale));
+  --space-022: calc(22 * 4.5px * var(--zoom-scale));
+  --space-023: calc(23 * 4.5px * var(--zoom-scale));
+  --space-024: calc(24 * 4.5px * var(--zoom-scale));
+  --space-025: calc(25 * 4.5px * var(--zoom-scale));
+  --space-026: calc(26 * 4.5px * var(--zoom-scale));
+  --space-027: calc(27 * 4.5px * var(--zoom-scale));
+  --space-028: calc(28 * 4.5px * var(--zoom-scale));
 
   /* Border radius */
   --radius-001: 2px;
@@ -178,7 +194,6 @@ body {
    ============================================ */
 :root {
   --card-min-w: calc(180px * var(--zoom-scale, 1));
-  --card-max-w: calc(240px * var(--zoom-scale, 1));
 }
 
 /* ============================================

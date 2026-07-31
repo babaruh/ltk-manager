@@ -3,6 +3,7 @@ export {
   useClearStoppingOnIdle,
   useClearTestingProjectsOnIdle,
   useGuardedStartPatcher,
+  useIsLeagueRunning,
   useOverlayProgress,
   usePatcherError,
   usePatcherStatus,

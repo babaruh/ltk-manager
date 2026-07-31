@@ -8,6 +8,7 @@ describe("libraryFilter store", () => {
       selectedMaps: new Set(),
       sort: { field: "priority", direction: "desc" },
     });
+    localStorage.clear();
   });
 
   describe("toggleTag", () => {
@@ -91,6 +92,44 @@ describe("libraryFilter store", () => {
     it("updates sort config", () => {
       useLibraryFilterStore.getState().setSort({ field: "name", direction: "asc" });
       expect(useLibraryFilterStore.getState().sort).toEqual({ field: "name", direction: "asc" });
+    });
+  });
+
+  describe("persistence", () => {
+    it("persists sort and filters to localStorage under ltk-library-filter key", () => {
+      useLibraryFilterStore.getState().setSort({ field: "name", direction: "asc" });
+      useLibraryFilterStore.getState().setTags(new Set(["skin"]));
+
+      const stored = localStorage.getItem("ltk-library-filter");
+      expect(stored).toBeTruthy();
+      const parsed = JSON.parse(stored!);
+      expect(parsed.state.sort).toEqual({ field: "name", direction: "asc" });
+      expect(parsed.state.selectedTags).toEqual(["skin"]);
+    });
+
+    it("rehydrates Set fields from a persisted array", () => {
+      localStorage.setItem(
+        "ltk-library-filter",
+        JSON.stringify({
+          version: 0,
+          state: {
+            selectedTags: ["skin"],
+            selectedChampions: ["Ahri"],
+            selectedMaps: ["SR"],
+            showOnlyEnabled: true,
+            sort: { field: "installedAt", direction: "desc" },
+          },
+        }),
+      );
+
+      useLibraryFilterStore.persist.rehydrate();
+
+      const state = useLibraryFilterStore.getState();
+      expect(state.selectedTags).toEqual(new Set(["skin"]));
+      expect(state.selectedChampions).toEqual(new Set(["Ahri"]));
+      expect(state.selectedMaps).toEqual(new Set(["SR"]));
+      expect(state.showOnlyEnabled).toBe(true);
+      expect(state.sort).toEqual({ field: "installedAt", direction: "desc" });
     });
   });
 });

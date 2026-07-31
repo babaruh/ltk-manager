@@ -51,7 +51,7 @@ export function Diagnostics() {
 
   return (
     <div className="h-full overflow-y-auto">
-      <div className="mx-auto max-w-4xl space-y-6 p-6">
+      <div className="mx-auto max-w-5xl space-y-6 p-6">
         <header className="flex items-start justify-between gap-4">
           <div>
             <h1 className="flex items-center gap-2 text-xl font-semibold text-surface-100">

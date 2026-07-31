@@ -159,11 +159,9 @@ describe("PlayButton", () => {
     mockBackend({ launchMode: "modern", leagueRunning: true });
     render(<PlayButton />, { wrapper });
 
-    // Re-queried rather than reused: settings arriving swaps the bare button for
-    // the split one, and the node found before that is detached by the time it
-    // would be clicked.
-    await screen.findByRole("button", { name: "More launch options" });
-    await userEvent.click(screen.getByRole("button", { name: "Start Patcher" }));
+    const button = await screen.findByRole("button", { name: "Start Patcher" });
+    await waitFor(() => expect(button).toBeEnabled());
+    await userEvent.click(button);
 
     await waitFor(() => expect(invokedCommands()).toContain("start_patcher"));
     expect(invokedCommands()).not.toContain("launch_league");
@@ -200,13 +198,21 @@ describe("PlayButton", () => {
     expect(invokedCommands()).not.toContain("launch_league");
   });
 
-  /// Classic is the app as it was before it could launch, so there is no
-  /// launcher hiding behind a dropdown either.
+  /// The split dropdown was removed entirely - there is exactly one button,
+  /// in every mode, never a second "more options" click target beside it.
   it("has no launch menu at all in classic mode", async () => {
     mockBackend();
     render(<PlayButton />, { wrapper });
 
     await screen.findByRole("button", { name: "Start Patcher" });
+    expect(screen.queryByRole("button", { name: "More launch options" })).not.toBeInTheDocument();
+  });
+
+  it("has no launch menu at all in modern mode either", async () => {
+    mockBackend({ launchMode: "modern" });
+    render(<PlayButton />, { wrapper });
+
+    await screen.findByRole("button", { name: "Play" });
     expect(screen.queryByRole("button", { name: "More launch options" })).not.toBeInTheDocument();
   });
 });

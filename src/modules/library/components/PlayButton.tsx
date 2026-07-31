@@ -1,6 +1,6 @@
-import { ChevronDown, ChevronsRight } from "lucide-react";
+import { ChevronsRight } from "lucide-react";
 
-import { Button, ButtonGroup, IconButton, Kbd, LeagueIcon, Menu, Tooltip } from "@/components";
+import { Button, Kbd, LeagueIcon, Tooltip } from "@/components";
 import { useHddWarning, usePlatformSupport } from "@/hooks";
 import { useLaunchAvailability, usePlay } from "@/modules/launcher";
 import { useInstalledMods } from "@/modules/library/api";
@@ -49,50 +49,12 @@ function PrimaryIcon({ patcherOnly }: { patcherOnly: boolean }) {
   return <LeagueIcon className="h-6 w-6 shrink-0" />;
 }
 
-interface LaunchMenuItemProps {
-  label: string;
-  leagueRunning: boolean;
-  disabled: boolean;
-  onClick: () => void;
-}
-
-/**
- * A menu entry whose action ends in League starting, with a note for the one
- * disabling condition the user can act on.
- *
- * A launch with League already up is a no-op. The label stays put - it names
- * the action, not the state - and the reason rides alongside it.
- */
-function LaunchMenuItem({ label, leagueRunning, disabled, onClick }: LaunchMenuItemProps) {
-  const icon = <LeagueIcon className="h-4 w-4" />;
-
-  if (leagueRunning) {
-    return (
-      <Menu.Item icon={icon} disabled>
-        {label}
-        <span className="ml-2 text-xs text-surface-500">already running</span>
-      </Menu.Item>
-    );
-  }
-
-  return (
-    <Menu.Item icon={icon} onClick={onClick} disabled={disabled}>
-      {label}
-    </Menu.Item>
-  );
-}
-
 /**
  * The library's primary action: build the overlay, start the patcher and ask
  * the Riot Client to start League - the whole path in one click.
  *
- * The split menu keeps each half reachable on its own. Someone who launches
- * League from the Riot Client, or who wants the game without mods, must not
- * have to go through the composed flow to get there.
- *
- * Classic mode drops the split: it is the app as it was before it could launch
- * anything, and a menu whose every entry is the launcher is not that. Settings
- * is where that choice is made and unmade.
+ * A single button, no split/dropdown - whichever half `launchMode` doesn't
+ * pick stays reachable from Settings rather than a second click target here.
  */
 export function PlayButton({ disabled = false }: PlayButtonProps) {
   const { data: platform } = usePlatformSupport();
@@ -109,7 +71,6 @@ export function PlayButton({ disabled = false }: PlayButtonProps) {
   const isRunning = status?.running ?? false;
   const isBuilding = status?.phase === "building";
   const hasEnabledMods = mods.some((m) => m.enabled);
-  const canLaunch = availability?.canLaunch ?? false;
   const leagueRunning = availability?.leagueRunning ?? false;
 
   async function handleStartPatcherOnly() {
@@ -128,7 +89,7 @@ export function PlayButton({ disabled = false }: PlayButtonProps) {
 
   // A running client puts the launcher in the same place classic does, since
   // launching into it is a no-op and the button would be promising something it
-  // cannot do. The menu stays, though - the launcher was still asked for.
+  // cannot do.
   const patcherOnly = classic || leagueRunning;
 
   const primaryAction = patcherOnly ? handleStartPatcherOnly : handlePlay;
@@ -138,7 +99,7 @@ export function PlayButton({ disabled = false }: PlayButtonProps) {
   if (!(platform?.patcherAvailable ?? true)) return null;
 
   if (isRunning && !isBusy) {
-    const stopButton = (
+    return (
       <Tooltip
         content={
           <>
@@ -153,7 +114,7 @@ export function PlayButton({ disabled = false }: PlayButtonProps) {
       >
         <Button
           variant="outline"
-          size="md"
+          size="sm"
           onClick={() => stopPatcher.mutate()}
           loading={stopping}
           disabled={disabled || stopping}
@@ -167,44 +128,11 @@ export function PlayButton({ disabled = false }: PlayButtonProps) {
         </Button>
       </Tooltip>
     );
-
-    if (classic) return stopButton;
-
-    return (
-      <ButtonGroup>
-        {stopButton}
-        <Menu.Root>
-          <Menu.Trigger
-            render={
-              <IconButton
-                icon={<ChevronDown className="h-4 w-4" />}
-                variant="outline"
-                size="md"
-                aria-label="More launch options"
-                className="w-auto px-2"
-              />
-            }
-          />
-          <Menu.Portal>
-            <Menu.Positioner>
-              <Menu.Popup className="w-64">
-                <LaunchMenuItem
-                  label="Launch League"
-                  leagueRunning={leagueRunning}
-                  onClick={launchOnly}
-                  disabled={!canLaunch || isBusy}
-                />
-              </Menu.Popup>
-            </Menu.Positioner>
-          </Menu.Portal>
-        </Menu.Root>
-      </ButtonGroup>
-    );
   }
 
   const busy = isLoading || disabled || isBusy || isBuilding;
 
-  const primaryButton = (
+  return (
     <Tooltip
       content={
         <>
@@ -215,7 +143,7 @@ export function PlayButton({ disabled = false }: PlayButtonProps) {
     >
       <Button
         variant="filled"
-        size="md"
+        size="sm"
         onClick={primaryAction}
         loading={isBusy || isBuilding}
         disabled={busy || (patcherOnly && !hasEnabledMods)}
@@ -225,57 +153,5 @@ export function PlayButton({ disabled = false }: PlayButtonProps) {
         {playLabel(step, isBuilding, patcherOnly)}
       </Button>
     </Tooltip>
-  );
-
-  if (classic) return primaryButton;
-
-  return (
-    <ButtonGroup>
-      {primaryButton}
-      <Menu.Root>
-        <Menu.Trigger
-          render={
-            <IconButton
-              icon={<ChevronDown className="h-4 w-4" />}
-              variant="filled"
-              size="md"
-              disabled={busy}
-              aria-label="More launch options"
-              className="w-auto px-2"
-            />
-          }
-        />
-        <Menu.Portal>
-          <Menu.Positioner>
-            <Menu.Popup className="w-64">
-              {patcherOnly && (
-                <LaunchMenuItem
-                  label="Play"
-                  leagueRunning={leagueRunning}
-                  onClick={handlePlay}
-                  disabled={!canLaunch}
-                />
-              )}
-              {!patcherOnly && (
-                <Menu.Item
-                  icon={<ChevronsRight className="h-4 w-4" />}
-                  onClick={handleStartPatcherOnly}
-                  disabled={!hasEnabledMods}
-                  shortcut="Ctrl+P"
-                >
-                  Start patcher only
-                </Menu.Item>
-              )}
-              <LaunchMenuItem
-                label="Launch League only"
-                leagueRunning={leagueRunning}
-                onClick={launchOnly}
-                disabled={!canLaunch}
-              />
-            </Menu.Popup>
-          </Menu.Positioner>
-        </Menu.Portal>
-      </Menu.Root>
-    </ButtonGroup>
   );
 }

@@ -28,6 +28,7 @@ export function createMockSettings(overrides?: Partial<Settings>): Settings {
     autoRun: false,
     startInTrayUnlessUpdate: false,
     alwaysStartPatcher: false,
+    autoStartPatcherOnLeagueLaunch: false,
     launchMode: "classic",
     hasSeenHddWarning: false,
     elevateInjector: false,

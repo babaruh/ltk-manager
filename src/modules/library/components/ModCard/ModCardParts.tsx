@@ -21,7 +21,7 @@ type CardVariant = "grid" | "list";
 const THUMBNAIL_VARIANTS: Record<CardVariant, { container: string; placeholder: string }> = {
   grid: {
     container:
-      "relative aspect-video overflow-hidden rounded-t-xl bg-linear-to-br from-surface-700 to-surface-800",
+      "relative aspect-video overflow-hidden rounded-t-lg bg-linear-to-br from-surface-700 to-surface-800",
     placeholder: "text-4xl font-bold text-surface-400",
   },
   list: {
@@ -55,8 +55,7 @@ export function ModCardThumbnail({
   );
 }
 
-const GRID_SWITCH_CLASS =
-  "shadow-lg data-[unchecked]:bg-surface-600/80 data-[unchecked]:backdrop-blur-sm";
+const GRID_SWITCH_CLASS = "backdrop-blur-sm data-[unchecked]:bg-surface-600/80";
 
 export function ModCardToggle({ variant, view }: { variant: CardVariant; view: ModCardView }) {
   const { mod } = view;

@@ -7,7 +7,7 @@ import { hasErrorCode } from "@/utils/errors";
 
 export function LibraryLoadingState() {
   return (
-    <div className="grid grid-cols-[repeat(auto-fill,minmax(var(--card-min-w,240px),var(--card-max-w,320px)))] justify-center gap-4">
+    <div className="grid grid-cols-[repeat(auto-fill,minmax(var(--card-min-w,180px),1fr))] gap-4">
       {Array.from({ length: 6 }, (_, i) => (
         <div
           key={i}

@@ -46,14 +46,14 @@ export function Settings() {
 
   return (
     <div className="flex h-full flex-col">
-      <header className="flex h-16 shrink-0 items-center border-b border-surface-600 bg-surface-800/50 px-6">
+      <header className="flex h-16 shrink-0 items-center bg-surface-900/40 px-6">
         <h2 className="text-xl font-semibold text-surface-100">Settings</h2>
       </header>
 
       <Tabs.Root defaultValue="general" className="flex min-h-0 flex-1 flex-row">
         <Tabs.List
           variant="pills"
-          className="w-52 shrink-0 flex-col items-stretch rounded-none border-r border-surface-700/50 bg-surface-950/60 p-3"
+          className="w-52 shrink-0 flex-col items-stretch rounded-none bg-surface-950/40 p-3"
         >
           <Tabs.Tab
             variant="pills"
@@ -114,7 +114,7 @@ export function Settings() {
         </Tabs.List>
 
         <div className="min-h-0 flex-1 overflow-auto">
-          <Tabs.Panel value="general" className="mx-auto max-w-2xl space-y-8 p-6">
+          <Tabs.Panel value="general" className="mx-auto max-w-4xl space-y-8 p-6">
             {firstRun && !settings.leaguePath && (
               <div className="flex items-start gap-3 rounded-xl border border-accent-500/30 bg-accent-500/10 p-5">
                 <Info className="mt-0.5 h-5 w-5 shrink-0 text-accent-400" />
@@ -130,27 +130,27 @@ export function Settings() {
             <GeneralSection settings={settings} onSave={saveSettings} />
           </Tabs.Panel>
 
-          <Tabs.Panel value="library" className="mx-auto max-w-2xl space-y-8 p-6">
+          <Tabs.Panel value="library" className="mx-auto max-w-4xl space-y-8 p-6">
             <LibrarySection settings={settings} onSave={saveSettings} />
           </Tabs.Panel>
 
-          <Tabs.Panel value="patching" className="mx-auto max-w-2xl space-y-8 p-6">
+          <Tabs.Panel value="patching" className="mx-auto max-w-4xl space-y-8 p-6">
             <PatchingSection settings={settings} onSave={saveSettings} />
           </Tabs.Panel>
 
-          <Tabs.Panel value="hotkeys" className="mx-auto max-w-2xl p-6">
+          <Tabs.Panel value="hotkeys" className="mx-auto max-w-4xl p-6">
             <HotkeySection settings={settings} onSave={saveSettings} />
           </Tabs.Panel>
 
-          <Tabs.Panel value="profiles" className="mx-auto max-w-2xl p-6">
+          <Tabs.Panel value="profiles" className="mx-auto max-w-4xl p-6">
             <AuthorProfilesSection settings={settings} onSave={saveSettings} />
           </Tabs.Panel>
 
-          <Tabs.Panel value="appearance" className="mx-auto max-w-2xl p-6">
+          <Tabs.Panel value="appearance" className="mx-auto max-w-4xl p-6">
             <AppearanceSection settings={settings} onSave={saveSettings} />
           </Tabs.Panel>
 
-          <Tabs.Panel value="about" className="mx-auto max-w-2xl p-6">
+          <Tabs.Panel value="about" className="mx-auto max-w-4xl p-6">
             <AboutSection appInfo={appInfo} />
           </Tabs.Panel>
         </div>

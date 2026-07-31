@@ -45,12 +45,12 @@ export function LibraryContent({
 
   // Extra bottom padding in select mode so the floating action bar never covers the last row.
   const scrollClass = selectMode
-    ? "flex-1 overflow-auto px-6 pt-6 pb-28"
-    : "flex-1 overflow-auto p-6";
+    ? "flex-1 overflow-auto px-4 pt-4 pb-28"
+    : "flex-1 overflow-auto p-4";
 
   if (contentView.type === "loading") {
     return (
-      <div className="flex-1 overflow-auto p-6">
+      <div className="flex-1 overflow-auto p-4">
         <LibraryLoadingState />
       </div>
     );
@@ -58,7 +58,7 @@ export function LibraryContent({
 
   if (contentView.type === "error") {
     return (
-      <div className="flex-1 overflow-auto p-6">
+      <div className="flex-1 overflow-auto p-4">
         <LibraryErrorState error={error!} />
       </div>
     );
@@ -66,7 +66,7 @@ export function LibraryContent({
 
   if (contentView.type === "empty") {
     return (
-      <div className="flex-1 overflow-auto p-6">
+      <div className="flex-1 overflow-auto p-4">
         <LibraryEmptyState hasSearch={contentView.hasSearch} hasFilters={contentView.hasFilters} />
       </div>
     );

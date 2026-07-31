@@ -1,6 +1,6 @@
 import { Loader2, Sparkles } from "lucide-react";
 
-import { IconButton, Tooltip } from "@/components";
+import { Menu } from "@/components";
 import {
   useAllModWadReports,
   useAnalyzeUncategorizedMods,
@@ -28,29 +28,24 @@ export function AnalyzeUncategorizedButton({ disabled }: AnalyzeUncategorizedBut
   if (settings && !settings.autoCategorizationEnabled) return null;
 
   const uncategorized = (allMods ?? []).filter((m) => !wadReports?.[m.id]);
-  const tooltip =
+  const label =
     uncategorized.length === 0
       ? "Every mod has been categorized"
-      : `Detect champions, maps & tags for ${uncategorized.length} uncategorized mod${
-          uncategorized.length === 1 ? "" : "s"
-        }`;
+      : `Analyze ${uncategorized.length} uncategorized mod${uncategorized.length === 1 ? "" : "s"}`;
 
   return (
-    <Tooltip content={tooltip}>
-      <IconButton
-        icon={
-          analyze.isPending ? (
-            <Loader2 className="h-4 w-4 animate-spin" />
-          ) : (
-            <Sparkles className="h-4 w-4" />
-          )
-        }
-        variant="ghost"
-        size="sm"
-        onClick={() => analyze.mutate(uncategorized)}
-        disabled={disabled || analyze.isPending || uncategorized.length === 0}
-        aria-label="Analyze uncategorized mods"
-      />
-    </Tooltip>
+    <Menu.Item
+      icon={
+        analyze.isPending ? (
+          <Loader2 className="h-4 w-4 animate-spin" />
+        ) : (
+          <Sparkles className="h-4 w-4" />
+        )
+      }
+      onClick={() => analyze.mutate(uncategorized)}
+      disabled={disabled || analyze.isPending || uncategorized.length === 0}
+    >
+      {label}
+    </Menu.Item>
   );
 }

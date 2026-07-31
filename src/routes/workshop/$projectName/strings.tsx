@@ -18,7 +18,7 @@ function ProjectStrings() {
   const editor = useStringOverridesEditor();
 
   return (
-    <div className="mx-auto max-w-3xl space-y-6 p-6">
+    <div className="mx-auto max-w-5xl space-y-6 p-6">
       <div className="flex items-start justify-between gap-4">
         <div>
           <h2 className="text-base font-semibold text-surface-100">String Overrides</h2>

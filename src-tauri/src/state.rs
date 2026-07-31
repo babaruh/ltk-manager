@@ -200,6 +200,11 @@ pub struct Settings {
     /// Always start the patcher automatically on launch. Default: false.
     #[serde(default)]
     pub always_start_patcher: bool,
+    /// Start the patcher automatically when League is launched, even if it
+    /// wasn't started through this manager (e.g. from the Riot Client or a
+    /// desktop shortcut). Default: false.
+    #[serde(default)]
+    pub auto_start_patcher_on_league_launch: bool,
     /// What the library's primary button does. Default: [`LaunchMode::Classic`],
     /// so an install that predates the launcher keeps the button it had.
     #[serde(default)]
@@ -248,6 +253,7 @@ impl Default for Settings {
             auto_run: false,
             start_in_tray_unless_update: false,
             always_start_patcher: false,
+            auto_start_patcher_on_league_launch: false,
             launch_mode: LaunchMode::default(),
             migration_dismissed: false,
             reload_mods_hotkey: None,
@@ -468,5 +474,23 @@ mod tests {
         assert!(settings.kill_league_stops_patcher);
         assert!(settings.reload_mods_hotkey.is_none());
         assert!(settings.kill_league_hotkey.is_none());
+    }
+
+    #[test]
+    fn auto_start_patcher_on_league_launch_defaults_to_false_when_absent() {
+        let json = r#"{"firstRunComplete": false, "theme": "system", "accentColor": {}, "patchTft": false, "migrationDismissed": false}"#;
+        let settings: Settings = serde_json::from_str(json).unwrap();
+        assert!(!settings.auto_start_patcher_on_league_launch);
+    }
+
+    #[test]
+    fn auto_start_patcher_on_league_launch_round_trips() {
+        let settings = Settings {
+            auto_start_patcher_on_league_launch: true,
+            ..Settings::default()
+        };
+        let json = serde_json::to_string(&settings).unwrap();
+        let deserialized: Settings = serde_json::from_str(&json).unwrap();
+        assert!(deserialized.auto_start_patcher_on_league_launch);
     }
 }

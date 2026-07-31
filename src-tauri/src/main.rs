@@ -109,6 +109,7 @@ fn main() {
             commands::rebuild_overlay,
             commands::get_patcher_status,
             commands::get_linked_bin_offenders,
+            commands::is_league_running,
             // Launcher
             commands::launch_league,
             commands::get_launch_availability,

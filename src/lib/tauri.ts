@@ -136,6 +136,7 @@ export const api = {
   getPatcherStatus: () => invokeResult<PatcherStatus>("get_patcher_status"),
   getLinkedBinOffenders: () =>
     invokeResult<Record<string, LinkedBinOffenderInfo>>("get_linked_bin_offenders"),
+  isLeagueRunning: () => invokeResult<boolean>("is_league_running"),
 
   // Launcher
   // Resolves to null when a launch was already in flight - a redundant click.

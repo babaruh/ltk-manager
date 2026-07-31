@@ -1,4 +1,5 @@
 export { useAutoStartPatcher } from "./useAutoStartPatcher";
+export { useAutoStartPatcherOnLeagueLaunch } from "./useAutoStartPatcherOnLeagueLaunch";
 export { useClickOutside } from "./useClickOutside";
 export { useDebouncedValue } from "./useDebouncedValue";
 export { useHddWarning } from "./useHddWarning";

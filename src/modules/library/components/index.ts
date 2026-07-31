@@ -21,6 +21,7 @@ export * from "./LayerPopover";
 export * from "./LayerToggleList";
 export * from "./LibraryContent";
 export * from "./LibraryContextMenu";
+export * from "./LibraryOverflowMenu";
 export * from "./LibraryStates";
 export * from "./LibraryToolbar";
 export * from "./MissingDepsBadge";

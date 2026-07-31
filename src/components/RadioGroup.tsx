@@ -77,9 +77,9 @@ export const RadioGroupCard = forwardRef<HTMLButtonElement, RadioGroupCardProps>
       <Radio.Root
         ref={ref}
         className={twMerge(
-          "flex-1 cursor-pointer rounded-lg border p-3 text-left transition-all",
-          "border-surface-600 hover:border-surface-500",
-          "data-[checked]:border-accent-500 data-[checked]:bg-accent-500/10",
+          "flex-1 cursor-pointer rounded-lg bg-surface-800/60 p-3 text-left transition-colors",
+          "hover:bg-surface-800",
+          "data-[checked]:bg-accent-500/10 data-[checked]:shadow-[inset_2px_0_0_0_var(--color-accent-500)]",
           "focus-visible:ring-2 focus-visible:ring-accent-500 focus-visible:ring-offset-2 focus-visible:ring-offset-surface-800 focus-visible:outline-none",
           "disabled:cursor-not-allowed disabled:opacity-50",
           className,

@@ -31,40 +31,40 @@ export function ModCardGrid({ view }: { view: ModCardView }) {
     skinhackInfoOpen,
     setSkinhackInfoOpen,
     onCardClick,
+    onCheckboxClick,
   } = view;
 
   const stateClass = match({ isSelected: inSelectedState, isEnabled: inEnabledState })
-    .with({ isSelected: true }, () => "border-accent-500 bg-surface-800 ring-2 ring-accent-400/60")
-    .with(
-      { isEnabled: true },
-      () =>
-        "border-accent-500/40 bg-surface-800 shadow-[0_0_12px_-6px] shadow-accent-500/25 hover:-translate-y-px hover:shadow-[0_0_14px_-5px,0_4px_6px_-1px] hover:shadow-accent-500/30",
-    )
-    .otherwise(
-      () =>
-        "border-surface-600 bg-surface-800 hover:-translate-y-px hover:border-surface-400 hover:bg-surface-700/80 hover:shadow-md",
-    );
+    .with({ isSelected: true }, () => "bg-surface-800")
+    .with({ isEnabled: true }, () => "bg-surface-900 hover:bg-surface-800/70")
+    .otherwise(() => "bg-transparent hover:bg-surface-800/50");
 
   return (
     <div
       onClick={onCardClick}
       className={twMerge(
-        "group relative flex h-full flex-col rounded-xl border transition-[transform,box-shadow,background-color,border-color] duration-150 ease-out",
+        "group relative flex h-full flex-col rounded-lg transition-colors duration-150 ease-out",
         cursorClass,
         stateClass,
       )}
     >
-      {selectMode && (
-        <div className="pointer-events-none absolute top-2 left-2 z-10">
-          <Checkbox
-            size="md"
-            checked={isSelected}
-            tabIndex={-1}
-            aria-label={`Select ${mod.displayName}`}
-            className="shadow-lg backdrop-blur-sm"
-          />
-        </div>
-      )}
+      <div
+        className="absolute top-2 left-2 z-10"
+        data-no-toggle
+        onClick={(e) => e.stopPropagation()}
+      >
+        <Checkbox
+          size="md"
+          checked={isSelected}
+          onCheckedChange={onCheckboxClick}
+          tabIndex={-1}
+          aria-label={`Select ${mod.displayName}`}
+          className={twMerge(
+            "backdrop-blur-sm transition-opacity",
+            !selectMode && !isSelected && "opacity-60 hover:opacity-100",
+          )}
+        />
+      </div>
       <div
         className="absolute top-2 right-2 z-10"
         data-no-toggle
@@ -75,7 +75,7 @@ export function ModCardGrid({ view }: { view: ModCardView }) {
 
       {isFlagged && (
         <Tooltip content={skinhackReason}>
-          <div className="absolute top-2 left-2 z-10 rounded-md bg-red-500/90 p-1">
+          <div className="absolute top-2 left-9 z-10 rounded-md bg-red-500/90 p-1">
             <ShieldAlert className="h-4 w-4 text-white" />
           </div>
         </Tooltip>

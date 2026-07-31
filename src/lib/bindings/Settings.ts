@@ -52,6 +52,12 @@ startInTrayUnlessUpdate: boolean,
  */
 alwaysStartPatcher: boolean, 
 /**
+ * Start the patcher automatically when League is launched, even if it
+ * wasn't started through this manager (e.g. from the Riot Client or a
+ * desktop shortcut). Default: false.
+ */
+autoStartPatcherOnLeagueLaunch: boolean, 
+/**
  * What the library's primary button does. Default: [`LaunchMode::Classic`],
  * so an install that predates the launcher keeps the button it had.
  */

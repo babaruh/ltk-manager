@@ -19,12 +19,7 @@ export function SectionCard({
   className,
 }: SectionCardProps) {
   return (
-    <section
-      className={twMerge(
-        "rounded-xl border border-surface-700/50 bg-surface-900/95 p-5",
-        className,
-      )}
-    >
+    <section className={twMerge("rounded-lg bg-surface-900/60 p-5", className)}>
       <div className="mb-4 flex items-start justify-between gap-4">
         <div>
           <h3 className="flex items-center gap-2 text-sm font-medium text-surface-200">

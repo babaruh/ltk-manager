@@ -25,7 +25,7 @@ export function FolderCard({ folder, mods }: FolderCardProps) {
       <Link
         to="/folder/$folderId"
         params={{ folderId: folder.id }}
-        className="group relative flex h-full w-full cursor-pointer flex-col rounded-xl border border-surface-600 bg-surface-800 text-left no-underline transition-[transform,box-shadow,border-color] duration-150 ease-out hover:-translate-y-px hover:border-surface-400 hover:shadow-md"
+        className="group relative flex h-full w-full cursor-pointer flex-col rounded-lg bg-surface-900 text-left no-underline transition-colors duration-150 ease-out hover:bg-surface-800/70"
       >
         {mods.length > 0 && (
           <div className="absolute top-2 right-2 z-10" onClick={(e) => e.stopPropagation()}>
@@ -38,7 +38,7 @@ export function FolderCard({ folder, mods }: FolderCardProps) {
           </div>
         )}
 
-        <div className="grid aspect-video grid-cols-2 grid-rows-2 gap-px overflow-hidden rounded-t-xl bg-surface-700">
+        <div className="grid aspect-video grid-cols-2 grid-rows-2 gap-px overflow-hidden rounded-t-lg bg-surface-700">
           {mods.slice(0, 4).map((mod) => (
             <FolderCardThumbnail key={mod.id} mod={mod} />
           ))}

@@ -86,18 +86,18 @@ export function ProjectCard({ project, viewMode, onEdit }: ProjectCardProps) {
     </button>
   );
 
-  const listBorderClass = isTestingThis
-    ? "border-green-500/40"
+  const listStateClass = isTestingThis
+    ? "bg-green-500/10 hover:bg-green-500/15"
     : selected
-      ? "border-accent-500/40"
-      : "border-surface-700";
+      ? "bg-surface-800"
+      : "bg-surface-900 hover:bg-surface-800/60";
 
   if (viewMode === "list") {
     return (
       <div
         className={twMerge(
-          "group flex cursor-pointer items-center gap-4 rounded-lg border bg-surface-900 p-4 transition-[transform,box-shadow,background-color,border-color] duration-150 ease-out hover:-translate-y-px hover:border-surface-600 hover:shadow-md",
-          listBorderClass,
+          "group flex cursor-pointer items-center gap-4 rounded-lg p-4 transition-colors duration-150 ease-out",
+          listStateClass,
           isPatcherActive && !isTestingThis && "opacity-50",
         )}
         onClick={() => onEdit(project)}
@@ -192,17 +192,17 @@ export function ProjectCard({ project, viewMode, onEdit }: ProjectCardProps) {
     );
   }
 
-  const gridBorderClass = isTestingThis
-    ? "border-green-500/40"
+  const gridStateClass = isTestingThis
+    ? "bg-green-500/10 hover:bg-green-500/15"
     : selected
-      ? "border-accent-500/40"
-      : "border-surface-600";
+      ? "bg-surface-800"
+      : "bg-surface-900 hover:bg-surface-800/70";
 
   return (
     <div
       className={twMerge(
-        "group relative cursor-pointer rounded-xl border bg-surface-800 transition-[transform,box-shadow,background-color,border-color] duration-150 ease-out hover:-translate-y-px hover:border-surface-400 hover:shadow-md",
-        gridBorderClass,
+        "group relative cursor-pointer rounded-lg transition-colors duration-150 ease-out",
+        gridStateClass,
         isPatcherActive && !isTestingThis && "opacity-50",
       )}
       onClick={() => onEdit(project)}
@@ -225,7 +225,7 @@ export function ProjectCard({ project, viewMode, onEdit }: ProjectCardProps) {
         />
       </div>
 
-      <div className="relative aspect-video overflow-hidden rounded-t-xl bg-linear-to-br from-surface-700 to-surface-800">
+      <div className="relative aspect-video overflow-hidden rounded-t-lg bg-linear-to-br from-surface-700 to-surface-800">
         {thumbnailUrl ? (
           <img src={thumbnailUrl} alt="" className="absolute inset-0 h-full w-full object-cover" />
         ) : (

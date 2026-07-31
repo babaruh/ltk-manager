@@ -4,7 +4,12 @@ import { Loader2 } from "lucide-react";
 import { useEffect } from "react";
 import { useHotkeys } from "react-hotkeys-hook";
 
-import { useAutoStartPatcher, useReducedMotion, useSurfaceLinkedBinWarning } from "@/hooks";
+import {
+  useAutoStartPatcher,
+  useAutoStartPatcherOnLeagueLaunch,
+  useReducedMotion,
+  useSurfaceLinkedBinWarning,
+} from "@/hooks";
 import { ProtocolInstallDialog, useDeepLinkListener } from "@/modules/deep-link";
 import { SessionBar } from "@/modules/launcher";
 import { useLibraryWatcher } from "@/modules/library";
@@ -34,6 +39,7 @@ function RootLayout() {
   useDeepLinkListener();
   useLibraryWatcher();
   useAutoStartPatcher();
+  useAutoStartPatcherOnLeagueLaunch();
   useSurfaceLinkedBinWarning();
   useClearTestingProjectsOnIdle();
   useClearStoppingOnIdle();

@@ -289,6 +289,39 @@ fn get_patcher_status_inner(state: &State<PatcherState>) -> AppResult<PatcherSta
     })
 }
 
+/// Whether League (the game, client, or Vanguard) currently appears to be running.
+///
+/// Used by the frontend to auto-start the patcher when League is launched from
+/// outside the manager (e.g. directly from the Riot Client or a desktop
+/// shortcut) rather than through this app's own Play button. Windows-only,
+/// like the rest of process detection here; always `false` elsewhere.
+#[tauri::command]
+pub fn is_league_running() -> IpcResult<bool> {
+    IpcResult::ok(is_league_running_inner())
+}
+
+#[cfg(target_os = "windows")]
+fn is_league_running_inner() -> bool {
+    !ritoclient_api::processes::list_matching(
+        &[
+            ritoclient_api::processes::RIOT_PROCESS_NAMES,
+            &[
+                "league of legends.exe",
+                ltk_manager_core::launcher::LEAGUE_CLIENT_EXE,
+                "leagueclientux.exe",
+                "leagueclientuxrender.exe",
+            ],
+        ]
+        .concat(),
+    )
+    .is_empty()
+}
+
+#[cfg(not(target_os = "windows"))]
+fn is_league_running_inner() -> bool {
+    false
+}
+
 /// Linked-bin offenders found in the most recent overlay build, keyed by mod id.
 ///
 /// These are recorded as a byproduct of `start_patcher`'s single overlay build (and

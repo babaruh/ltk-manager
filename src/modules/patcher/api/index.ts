@@ -3,6 +3,7 @@ export { useClearStoppingOnIdle } from "./useClearStoppingOnIdle";
 export { useClearTestingProjectsOnIdle } from "./useClearTestingProjectsOnIdle";
 export { useGuardedStartPatcher } from "./useGuardedStartPatcher";
 export { useHotkeyEvents } from "./useHotkeyEvents";
+export { useIsLeagueRunning } from "./useIsLeagueRunning";
 export { useOverlayProgress } from "./useOverlayProgress";
 export { usePatcherError } from "./usePatcherError";
 export { usePatcherStatus } from "./usePatcherStatus";

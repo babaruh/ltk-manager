@@ -83,6 +83,24 @@ export function LaunchSection({ settings, onSave }: LaunchSectionProps) {
             onCheckedChange={(checked) => onSave({ ...settings, hideRiotClientOnLaunch: checked })}
           />
         </label>
+
+        <label className="flex items-center justify-between gap-4">
+          <div>
+            <span className="block text-sm font-medium text-surface-200">
+              Start the patcher when League launches
+            </span>
+            <span className="block text-sm text-surface-400">
+              Detects League starting even if it wasn&apos;t launched through this manager (e.g.
+              from the Riot Client or a desktop shortcut) and starts the patcher automatically.
+            </span>
+          </div>
+          <Switch
+            checked={settings.autoStartPatcherOnLeagueLaunch}
+            onCheckedChange={(checked) =>
+              onSave({ ...settings, autoStartPatcherOnLeagueLaunch: checked })
+            }
+          />
+        </label>
       </div>
     </SectionCard>
   );

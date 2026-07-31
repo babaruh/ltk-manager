@@ -46,6 +46,22 @@
   --spacing-10: var(--space-010);
   --spacing-11: var(--space-011);
   --spacing-12: var(--space-012);
+  --spacing-13: var(--space-013);
+  --spacing-14: var(--space-014);
+  --spacing-15: var(--space-015);
+  --spacing-16: var(--space-016);
+  --spacing-17: var(--space-017);
+  --spacing-18: var(--space-018);
+  --spacing-19: var(--space-019);
+  --spacing-20: var(--space-020);
+  --spacing-21: var(--space-021);
+  --spacing-22: var(--space-022);
+  --spacing-23: var(--space-023);
+  --spacing-24: var(--space-024);
+  --spacing-25: var(--space-025);
+  --spacing-26: var(--space-026);
+  --spacing-27: var(--space-027);
+  --spacing-28: var(--space-028);
 
   /* Radius tokens */
   --radius-sm: var(--radius-001);
