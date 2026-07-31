@@ -20,7 +20,7 @@ import {
   WadScanFailedDialog,
 } from "@/modules/patcher";
 import { useAppInfo, useCheckSetupRequired, useSettings } from "@/modules/settings";
-import { DevConsole, TitleBar, useDevLogStream } from "@/modules/shell";
+import { ActivityBar, DevConsole, TitleBar, useDevLogStream } from "@/modules/shell";
 import { UpdateNotification, useUpdateCheck } from "@/modules/updater";
 import { useDisplayStore, useUpdaterUpdate } from "@/stores";
 
@@ -92,12 +92,15 @@ function RootLayout() {
   return (
     <div className="root flex h-screen flex-col bg-surface-900">
       <TitleBar appInfo={appInfo} />
-      <main className="relative flex-1 overflow-hidden">
-        <UpdateNotification />
-        <div className="h-full">
-          <Outlet />
-        </div>
-      </main>
+      <div className="flex min-h-0 flex-1">
+        <ActivityBar />
+        <main className="relative min-w-0 flex-1 overflow-hidden">
+          <UpdateNotification />
+          <div className="h-full">
+            <Outlet />
+          </div>
+        </main>
+      </div>
       <SessionBar />
       <ProtocolInstallDialog />
       <WadScanFailedDialog />

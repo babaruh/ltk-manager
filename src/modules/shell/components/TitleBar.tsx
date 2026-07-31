@@ -1,70 +1,15 @@
-import { Link } from "@tanstack/react-router";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { open } from "@tauri-apps/plugin-shell";
-import {
-  Accessibility,
-  EllipsisVertical,
-  FolderOpen,
-  Hammer,
-  Minus,
-  Settings,
-  Square,
-  Stethoscope,
-  X,
-} from "lucide-react";
-import { type ComponentType, useEffect, useState } from "react";
+import { Accessibility, EllipsisVertical, FolderOpen, Minus, Square, X } from "lucide-react";
+import { useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
 
-import { IconButton, MaskIcon, Menu, Separator, Tooltip, useToast } from "@/components";
+import { IconButton, Menu, Separator, Tooltip, useToast } from "@/components";
 import { usePlatformSupport } from "@/hooks";
 import { api, type AppInfo, unwrap } from "@/lib/tauri";
 import { ProfileSelector } from "@/modules/library";
 
 import { NotificationCenter } from "./NotificationCenter";
-
-const navItems = [
-  { to: "/", label: "Library", icon: MaskIcon, exact: true },
-  { to: "/workshop", label: "Workshop", icon: Hammer, exact: false },
-] as const;
-
-const linkBaseClass =
-  "relative flex h-full items-center gap-1.5 px-3 text-sm font-medium transition-colors";
-const settingsLinkBase = "relative flex h-full items-center px-3 transition-colors";
-const activeLinkClass = "text-accent-400";
-const inactiveLinkClass = "text-surface-400 hover:text-surface-200";
-
-function ActiveIndicator() {
-  return <span className="absolute right-0 bottom-0 left-0 h-0.5 bg-accent-500" />;
-}
-
-function NavLink({
-  to,
-  label,
-  icon: Icon,
-  exact,
-}: {
-  to: string;
-  label: string;
-  icon: ComponentType<{ className?: string }>;
-  exact: boolean;
-}) {
-  return (
-    <Link
-      to={to}
-      activeOptions={{ exact }}
-      activeProps={{ className: twMerge(linkBaseClass, activeLinkClass) }}
-      inactiveProps={{ className: twMerge(linkBaseClass, inactiveLinkClass) }}
-    >
-      {({ isActive }) => (
-        <>
-          <Icon className="h-4 w-4" />
-          {label}
-          {isActive && <ActiveIndicator />}
-        </>
-      )}
-    </Link>
-  );
-}
 
 function buildBugReportUrl(appInfo: AppInfo | undefined): string {
   const base = "https://github.com/LeagueToolkit/ltk-manager/issues/new?template=bug_report.yml";
@@ -83,6 +28,11 @@ interface TitleBarProps {
   appInfo?: AppInfo;
 }
 
+/**
+ * Trimmed to just window chrome - section navigation (Library/Workshop/
+ * Diagnostics/Settings) lives in the `ActivityBar` now, matching where VS
+ * Code draws the line between its title bar and its activity bar.
+ */
 export function TitleBar({ title = "LTK Manager", appInfo }: TitleBarProps) {
   const { data: platform } = usePlatformSupport();
   const isMacOS = platform?.os === "macos";
@@ -129,40 +79,33 @@ export function TitleBar({ title = "LTK Manager", appInfo }: TitleBarProps) {
   return (
     <header
       className={twMerge(
-        "title-bar flex h-10 shrink-0 items-center justify-between bg-surface-950 select-none",
+        "title-bar flex h-8 shrink-0 items-center justify-between bg-surface-950 select-none",
         // Fixed, not zoom-scaled: clears macOS's own traffic-light buttons,
         // which stay a constant OS size regardless of the app's density.
         isMacOS && "pl-[80px]",
       )}
       data-tauri-drag-region
     >
-      {/* Left: App icon, title, version, and navigation */}
+      {/* Left: App icon, title, version, profile */}
       <div className="flex h-full items-center" data-tauri-drag-region>
         <div className="flex items-center gap-2 pr-4 pl-3" data-tauri-drag-region>
-          <img src="/icon.svg" alt="LTK" className="h-5 w-5" data-tauri-drag-region />
-          <span className="text-sm font-medium text-surface-100" data-tauri-drag-region>
+          <img src="/icon.svg" alt="LTK" className="h-4 w-4" data-tauri-drag-region />
+          <span className="text-xs font-medium text-surface-100" data-tauri-drag-region>
             {title}
           </span>
           {version && (
-            <span className="text-xs text-surface-500" data-tauri-drag-region>
+            <span className="text-[11px] text-surface-500" data-tauri-drag-region>
               v{version}
             </span>
           )}
         </div>
-
-        {/* Navigation tabs */}
-        <nav className="flex h-full items-center gap-1">
-          {navItems.map((item) => (
-            <NavLink key={item.to} {...item} />
-          ))}
-        </nav>
 
         <Separator orientation="vertical" />
 
         <ProfileSelector />
       </div>
 
-      {/* Right: Notifications, Settings, and window controls */}
+      {/* Right: Notifications, overflow, and window controls */}
       <div className="flex h-full items-center">
         <NotificationCenter />
 
@@ -206,45 +149,6 @@ export function TitleBar({ title = "LTK Manager", appInfo }: TitleBarProps) {
           </Menu.Portal>
         </Menu.Root>
 
-        <Tooltip content="Diagnostics">
-          <Link
-            to="/diagnostics"
-            activeProps={{
-              className: twMerge(settingsLinkBase, activeLinkClass),
-            }}
-            inactiveProps={{
-              className: twMerge(settingsLinkBase, inactiveLinkClass),
-            }}
-            aria-label="Diagnostics"
-          >
-            {({ isActive }) => (
-              <>
-                <Stethoscope className="h-4 w-4" />
-                {isActive && <ActiveIndicator />}
-              </>
-            )}
-          </Link>
-        </Tooltip>
-
-        {/* Settings button */}
-        <Link
-          to="/settings"
-          activeProps={{
-            className: twMerge(settingsLinkBase, activeLinkClass),
-          }}
-          inactiveProps={{
-            className: twMerge(settingsLinkBase, inactiveLinkClass),
-          }}
-          aria-label="Settings"
-        >
-          {({ isActive }) => (
-            <>
-              <Settings className="h-4 w-4" />
-              {isActive && <ActiveIndicator />}
-            </>
-          )}
-        </Link>
-
         {!isMacOS && (
           <>
             <Separator orientation="vertical" />
@@ -255,7 +159,7 @@ export function TitleBar({ title = "LTK Manager", appInfo }: TitleBarProps) {
               size="sm"
               onClick={handleMinimize}
               aria-label="Minimize"
-              className="mx-0.5 h-7 w-7 rounded-md text-surface-400 transition-[transform,background-color,color] duration-100 hover:bg-amber-500 hover:text-white active:scale-90 active:opacity-80"
+              className="mx-0.5 h-7 w-7 text-surface-400 transition-colors duration-100 hover:bg-surface-700 hover:text-surface-100"
             />
             <IconButton
               icon={
@@ -269,7 +173,7 @@ export function TitleBar({ title = "LTK Manager", appInfo }: TitleBarProps) {
               size="sm"
               onClick={handleMaximize}
               aria-label={isMaximized ? "Restore" : "Maximize"}
-              className="mx-0.5 h-7 w-7 rounded-md text-surface-400 transition-[transform,background-color,color] duration-100 hover:bg-green-500 hover:text-white active:scale-90 active:opacity-80"
+              className="mx-0.5 h-7 w-7 text-surface-400 transition-colors duration-100 hover:bg-surface-700 hover:text-surface-100"
             />
             <IconButton
               icon={<X className="h-3.5 w-3.5" />}
@@ -277,7 +181,7 @@ export function TitleBar({ title = "LTK Manager", appInfo }: TitleBarProps) {
               size="sm"
               onClick={handleClose}
               aria-label="Close"
-              className="mx-0.5 mr-2 h-7 w-7 rounded-md text-surface-400 transition-[transform,background-color,color] duration-100 hover:bg-red-500 hover:text-white active:scale-90 active:opacity-80"
+              className="mx-0.5 mr-2 h-7 w-7 text-surface-400 transition-colors duration-100 hover:bg-red-600 hover:text-white"
             />
           </>
         )}

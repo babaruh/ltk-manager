@@ -84,10 +84,15 @@ function BorderShimmer() {
   );
 }
 
+/**
+ * VS Code's status bar is a single-line, solid-accent strip - this mirrors
+ * that for the bar's resting states (idle/stopping/settled), which are the
+ * ones anyone sees for more than a few seconds.
+ */
 function RestingLine({ children }: { children: React.ReactNode }) {
   return (
-    <div className="shrink-0 border-t border-surface-800 bg-surface-950 px-4 py-1.5 select-none">
-      <div className="flex items-center gap-2 text-sm">{children}</div>
+    <div className="flex h-6 shrink-0 items-center gap-2 bg-accent-600 px-3 text-xs select-none">
+      {children}
     </div>
   );
 }
@@ -131,9 +136,9 @@ export function SessionBar() {
 
     return (
       <RestingLine>
-        <span className="inline-flex h-2 w-2 shrink-0 rounded-full border border-surface-600" />
-        <span className="font-medium text-surface-300">Patcher idle</span>
-        <span className="text-surface-500">{idleHint(availability?.leagueRunning ?? false)}</span>
+        <span className="inline-flex h-1.5 w-1.5 shrink-0 rounded-full border border-white/70" />
+        <span className="font-medium text-white">Patcher idle</span>
+        <span className="text-white/70">{idleHint(availability?.leagueRunning ?? false)}</span>
       </RestingLine>
     );
   }
@@ -144,9 +149,9 @@ export function SessionBar() {
   if (stopping) {
     return (
       <RestingLine>
-        <Loader2 className="h-3.5 w-3.5 shrink-0 animate-spin text-surface-400" />
-        <span className="font-medium text-surface-300">Stopping patcher</span>
-        <span className="text-surface-500">Waiting for the injector to shut down...</span>
+        <Loader2 className="h-3.5 w-3.5 shrink-0 animate-spin text-white" />
+        <span className="font-medium text-white">Stopping patcher</span>
+        <span className="text-white/70">Waiting for the injector to shut down...</span>
       </RestingLine>
     );
   }
@@ -157,11 +162,11 @@ export function SessionBar() {
   if (settled) {
     return (
       <RestingLine>
-        <span className="inline-flex h-2 w-2 shrink-0 rounded-full bg-green-500 shadow-[0_0_6px_2px_rgba(74,222,128,0.6)]" />
-        <span className="font-medium text-green-400">Patcher running</span>
-        <span className="text-surface-400">Your mods will be applied when League starts.</span>
+        <span className="inline-flex h-1.5 w-1.5 shrink-0 rounded-full bg-green-400" />
+        <span className="font-medium text-white">Patcher running</span>
+        <span className="text-white/70">Your mods will be applied when League starts.</span>
         {testingProjects.length > 0 && (
-          <span className="ml-auto rounded-full bg-accent-500/10 px-2 py-0.5 text-xs font-medium text-accent-400">
+          <span className="ml-auto bg-white/15 px-2 py-0.5 text-xs font-medium text-white">
             {describeTestingProjects(testingProjects)}
           </span>
         )}

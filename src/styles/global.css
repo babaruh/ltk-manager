@@ -20,21 +20,26 @@
 /* Dark theme - DEFAULT */
 :root {
   /* RGB channels for alpha compositing in glass mode */
-  --surface-950-rgb: 20 20 22;
-  --surface-900-rgb: 28 28 31;
+  --surface-950-rgb: 51 51 51;
+  --surface-900-rgb: 30 30 30;
 
-  /* Background colors — layered with visible depth steps */
-  --surface-950: #141416; /* Deepest — titlebar, status bar */
-  --surface-900: #1c1c1f; /* Base background */
-  --surface-800: #242428; /* Toolbars, sidebars, cards */
-  --surface-700: #2c2c32; /* Inputs, hover backgrounds */
-  --surface-600: #3a3a42; /* Borders, dividers */
-  --surface-500: #4a4a52; /* Muted elements */
-  --surface-400: #85858f; /* Placeholder text */
-  --surface-300: #a0a0aa; /* Secondary text */
-  --surface-200: #d4d4d8; /* Primary text */
-  --surface-100: #ededf0; /* Bright text */
-  --surface-50: #fafafa; /* White text */
+  /* Background colors, mapped to VS Code's Dark+ chrome/content tones.
+     Not a monotonic brightness ramp: VS Code's own layering has the editor
+     (content) sit darker than the chrome around it, and these keep each
+     token's existing call sites (950 = titlebar/activity bar, 900 = main
+     content, 800 = sidebars/toolbars/cards) rather than reordering by
+     lightness. */
+  --surface-950: #333333; /* activityBar/titleBar background */
+  --surface-900: #1e1e1e; /* editor background - main content */
+  --surface-800: #252526; /* sideBar background - toolbars, cards */
+  --surface-700: #3c3c3c; /* input background, hover backgrounds */
+  --surface-600: #454545; /* panel border, dividers */
+  --surface-500: #5a5a5a; /* muted elements */
+  --surface-400: #969696; /* descriptionForeground - placeholder text */
+  --surface-300: #b0b0b0; /* secondary text */
+  --surface-200: #cccccc; /* foreground - primary text */
+  --surface-100: #e8e8e8; /* bright text */
+  --surface-50: #ffffff; /* white text */
 
   /* ---- Design Token Scales ---- */
 
@@ -71,12 +76,13 @@
   --space-027: calc(27 * 4.5px * var(--zoom-scale));
   --space-028: calc(28 * 4.5px * var(--zoom-scale));
 
-  /* Border radius */
-  --radius-001: 2px;
-  --radius-002: 4px;
-  --radius-003: 6px;
-  --radius-004: 9px;
-  --radius-005: 13px;
+  /* Border radius - VS Code is famously square; corners stay flat except the
+     one fully-round step reserved for pills/avatars/toggles. */
+  --radius-001: 0px;
+  --radius-002: 0px;
+  --radius-003: 0px;
+  --radius-004: 0px;
+  --radius-005: 2px;
   --radius-006: 9999px;
 
   /* Icon sizes (base scaled down 25%, then by zoom) */
